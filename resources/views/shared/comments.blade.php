@@ -16,7 +16,7 @@
                 style="width: 35px"
                 class="me-2 avatar-sm rounded-circle"
                 src="https://api.dicebear.com/6.x/fun-emoji/svg?seed=Luigi"
-                alt="Luigi Avatar"
+                alt="{{ $comment->user->name }}"
             />
             <div class="w-100">
                 <div class="d-flex justify-content-between align-items-center mt-2">
