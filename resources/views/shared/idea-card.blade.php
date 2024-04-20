@@ -16,9 +16,14 @@
                 <form action="{{ route('idea.destroy', $idea->id) }}" method="POST">
                     @csrf
                     @method('delete')
+                    @guest
+                    <a href="{{ route('idea.show', $idea->id) }}">View</a>
+                    @endguest
+                    @auth
                     <a class="me-2" href="{{ route('idea.edit', $idea->id) }}">Edit</a>
                     <a href="{{ route('idea.show', $idea->id) }}">View</a>
                     <button class=" ms-1 btn btn-danger btn-sm">X</button>
+                    @endauth
                 </form>
             </div>
         </div>

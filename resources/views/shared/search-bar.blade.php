@@ -7,6 +7,7 @@
             @csrf
             @method("GET")
             <input
+                value="{{ request('search', '') }}"
                 placeholder="..."
                 name="search"
                 class="form-control w-100"

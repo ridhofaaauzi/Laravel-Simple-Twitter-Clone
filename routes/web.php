@@ -20,24 +20,16 @@ use Illuminate\Support\Facades\Route;
 // dashboard page
 Route::get('/', [DashboardController::class, "index"])->name('dashboard');
 
-// contents page
-Route::group(['prefix' => 'ideas/', 'as' => 'idea.'], function () {
-    // Route::get('/{idea}', [IdeaController::class, "show"])->name('show');;
-    // Route::post('', [IdeaController::class, "store"])->name('store');
+// idea/{idea}
+Route::resource('idea', IdeaController::class)->except(['index', 'create'])->middleware('auth');
+Route::resource("idea", IdeaController::class)->only(['show']);
 
-    Route::group(['middleware' => ['auth']], function () {
-        // Route::get('/{idea}/edit', [IdeaController::class, "edit"])->name('edit');
-        // Route::put('/{idea}', [IdeaController::class, "update"])->name('update');
-        // Route::delete('/{idea}', [IdeaController::class, "destroy"])->name('destroy');
-        // comments page
-        Route::post('/{idea}/comments', [CommentController::class, "store"])->name('comments.store');
-    });
-});
+// idea/{idea}/comments/
+Route::resource('idea.comments', CommentController::class)->only(['store'])->middleware('auth');
 
-// ideas {ideas}
-Route::resource('ideas', IdeaController::class);
-// Route::resource("ideas", IdeaController::class)->except(['show']);
 
-Route::get('/terms', function () {
-    return view("terms");
-});
+
+
+// Route::get('/terms', function () {
+//     return view("terms");
+// });
