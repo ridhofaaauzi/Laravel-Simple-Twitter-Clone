@@ -12,9 +12,9 @@
                 </div>
             </div>
             <div>
-                @auth @if (Auth::id() === $user->id)
+                @can('update', $user)
                     <a href="{{ route('users.edit', $user->id) }}">Edit</a>
-                @endif @endauth
+                @endcan
             </div>
         </div>
         <div class="px-2 mt-4">
@@ -23,21 +23,23 @@
                 {{ $user->bio }}
             </p>
             @include('users.shared.user-stats')
-            @auth @if (Auth::id() !== $user->id)
-                <div class="mt-3">
-                    @if (Auth::user()->follows($user))
-                        <form action="{{ route('users.unfollow', $user->id) }}" method="POST">
-                            @csrf
-                            <button type="submit" class="btn btn-outline-primary btn-sm">Unfollow</button>
-                        </form>
-                    @else
-                        <form action="{{ route('users.follow', $user->id) }}" method="POST">
-                            @csrf
-                            <button type="submit" class="btn btn-primary btn-sm">Follow</button>
-                        </form>
-                    @endif
-                </div>
-            @endif @endauth
+            @auth()
+                @if (Auth::user()->isNot($user))
+                    <div class="mt-3">
+                        @if (Auth::user()->follows($user))
+                            <form action="{{ route('users.unfollow', $user->id) }}" method="POST">
+                                @csrf
+                                <button type="submit" class="btn btn-outline-primary btn-sm">Unfollow</button>
+                            </form>
+                        @else
+                            <form action="{{ route('users.follow', $user->id) }}" method="POST">
+                                @csrf
+                                <button type="submit" class="btn btn-primary btn-sm">Follow</button>
+                            </form>
+                        @endif
+                    </div>
+                @endif
+            @endauth
         </div>
     </div>
 </div>

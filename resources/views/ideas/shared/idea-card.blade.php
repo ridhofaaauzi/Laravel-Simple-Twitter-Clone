@@ -9,19 +9,18 @@
                             {{ $idea->user->name }} </a></h5>
                 </div>
             </div>
-            <div>
-                <form action="{{ route('idea.destroy', $idea->id) }}" method="POST">
-                    @csrf
-                    @method('delete')
-                    @guest
-                        <a href="{{ route('idea.show', $idea->id) }}">View</a>
-                    @endguest
-                    @auth
-                        <a class="me-2" href="{{ route('idea.edit', $idea->id) }}">Edit</a>
-                        <a href="{{ route('idea.show', $idea->id) }}">View</a>
-                        <button class=" ms-1 btn btn-danger btn-sm">X</button>
-                    @endauth
-                </form>
+            <div class="d-flex">
+                <a href="{{ route('idea.show', $idea->id) }}">View</a>
+                @auth
+                    @can('update', $idea)
+                        <a class="mx-2" href="{{ route('idea.edit', $idea->id) }}">Edit</a>
+                        <form action="{{ route('idea.destroy', $idea->id) }}" method="POST">
+                            @csrf
+                            @method('delete')
+                            <button class="ms-1 btn btn-danger btn-sm">X</button>
+                        </form>
+                    @endcan
+                @endauth
             </div>
         </div>
     </div>
@@ -32,8 +31,7 @@
                 @csrf
                 @method('put')
                 <div class="mb-3">
-                    <textarea class="form-control mb-2" name="content" id="content" rows="3">{{ $idea->content }}
-                    </textarea>
+                    <textarea class="form-control mb-2" name="content" id="content" rows="3">{{ $idea->content }}</textarea>
                     @error('content')
                         <span class="fs-6 text-danger">{{ $message }}</span>
                     @enderror
